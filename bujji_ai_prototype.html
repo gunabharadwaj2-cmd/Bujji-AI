@@ -75,35 +75,38 @@ function speak(text){
   u.onend=()=>setStatus("SYSTEM READY");
   speechSynthesis.speak(u);
 }
-function respond(raw){
-  const q=raw.trim(); if(!q)return;
-  $("heard").textContent=q;
-  const s=q.toLowerCase();
-  let r;
-  if(/hello|hi\b|హాయ్|హలో|నమస్కారం/.test(s)) r="Hi! నేను బుజ్జి. What can I help you with?";
-  else if(/నీ పేరు|నీ పేరు ఏంటి|your name|who are you/.test(s)) r="నా పేరు Bujji AI. నేను నీ personal assistant prototype ని.";
-  else if(/time|సమయం|టైమ్/.test(s)) r="ఖచ్చితమైన సమయం కోసం నీ ఫోన్ status bar చూడండి. Online AI ఇంకా connect కాలేదు.";
-  else if(/open youtube|యూట్యూబ్ తెరువు/.test(s)){r="YouTube తెరవడానికి ప్రయత్నిస్తున్నాను.";window.open("https://www.youtube.com","_blank");}
-  else if(/open google|గూగుల్ తెరువు/.test(s)){r="Google తెరవడానికి ప్రయత్నిస్తున్నాను.";window.open("https://www.google.com","_blank");}
-  else if(/help|సహాయం/.test(s)) r="ఇప్పుడు greetings, నా పేరు, Google/YouTube తెరవడం వంటి demo commands పరీక్షించవచ్చు. సాధారణ ప్రశ్నలకు నిజమైన AI connect చేయాల్సి ఉంటుంది.";
-  else r="నీ సందేశం అందింది: “"+q+"”. నేను ప్రస్తుతం local demo mode లో ఉన్నాను. సాధారణ ప్రశ్నలకు సమాధానం ఇవ్వడానికి తర్వాత secure AI service connect చేయాలి.";
-  lastReply=r;$("reply").textContent=r;speak(r);
+async function respond(raw) {
+  const q = raw.trim();
+  if (!q) return;
+
+  $("heard").textContent = q;
+  $("reply").textContent = "బుజ్జి, ఆలోచిస్తున్నాను...";
+
+  try {
+    const res = await fetch(
+      "https://bujji-ai-assistant.gunabharadwaj2.workers.dev",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: q })
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok || !data.reply) {
+      throw new Error(data.error || "AI response failed");
+    }
+
+    lastReply = data.reply;
+    $("reply").textContent = data.reply;
+    speak(data.reply);
+  } catch (error) {
+    const msg =
+      "క్షమించు బుజ్జి, AI కనెక్షన్‌లో సమస్య వచ్చింది. మళ్లీ ప్రయత్నించు.";
+    lastReply = msg;
+    $("reply").textContent = msg;
+    speak(msg);
+  }
 }
-const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-$("mic").addEventListener("click",()=>{
-  if(!SR){setStatus("VOICE INPUT NOT SUPPORTED");$("reply").textContent="ఈ browserలో speech recognition అందుబాటులో లేదు. Chrome తాజా వెర్షన్‌లో online secure page ద్వారా ప్రయత్నించు, లేదా message టైప్ చేయి.";return;}
-  try{
-    const rec=new SR();rec.lang=$("lang").value;rec.interimResults=false;rec.maxAlternatives=1;
-    $("app").classList.add("listening");setStatus("LISTENING…");$("mic").textContent="🎙 LISTENING…";
-    rec.onresult=e=>respond(e.results[0][0].transcript);
-    rec.onerror=e=>{setStatus("VOICE ERROR: "+e.error.toUpperCase());$("reply").textContent="వాయిస్ గుర్తించడంలో సమస్య వచ్చింది. Microphone permission, internet, speech language settings తనిఖీ చేయి."};
-    rec.onend=()=>{$("app").classList.remove("listening");$("mic").textContent="🎙 START SPEAKING";if($("status").textContent==="LISTENING…")setStatus("SYSTEM READY");};
-    rec.start();
-  }catch(e){setStatus("COULD NOT START");}
-});
-$("send").addEventListener("click",()=>{respond($("typed").value);$("typed").value="";});
-$("typed").addEventListener("keydown",e=>{if(e.key==="Enter")$("send").click();});
-$("speakAgain").addEventListener("click",()=>speak(lastReply));
-</script>
-</body>
-</html>
+ 
