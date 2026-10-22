@@ -1,112 +1,400 @@
 <!doctype html>
-<html lang="en">
+<html lang="te">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#06111f">
-<title>Bujji AI — Voice Prototype</title>
+<title>BUJJI AI</title>
+
 <style>
-:root{color-scheme:dark;--cyan:#52e6ff;--blue:#318bff;--muted:#9bb7cd}
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 25%,#103b62 0,#07192b 42%,#030811 100%);color:#eaf8ff;font-family:system-ui,-apple-system,Segoe UI,sans-serif;display:flex;justify-content:center}
-.app{width:min(100%,520px);padding:22px 18px 32px;display:flex;flex-direction:column;align-items:center}
-.top{width:100%;display:flex;justify-content:space-between;align-items:center;font-size:12px;letter-spacing:2px;color:var(--muted)}
-.pill{border:1px solid #23506c;border-radius:999px;padding:7px 10px}
-h1{font-size:30px;letter-spacing:5px;margin:28px 0 4px;color:#e9fbff;text-shadow:0 0 18px #37caff}
-.sub{color:var(--muted);font-size:12px;letter-spacing:3px}
-.orb-wrap{margin:38px 0 28px;width:220px;height:220px;display:grid;place-items:center;position:relative}
-.ring{position:absolute;border:1px solid #39dfff66;border-radius:50%;inset:0;animation:spin 16s linear infinite}
-.ring:before,.ring:after{content:"";position:absolute;border:1px solid #318bff77;border-radius:50%;inset:15px}
-.ring:after{inset:31px;border-style:dashed;animation:spin 22s linear infinite reverse}
-.orb{width:132px;height:132px;border-radius:50%;border:1px solid #8cf4ff;background:radial-gradient(circle at 35% 28%,#e8ffff 0,#6aeaff 7%,#167bb4 28%,#07182c 68%);box-shadow:0 0 22px #42dcff,0 0 65px #167aff80,inset 0 0 25px #5eeaff;display:grid;place-items:center}
-.orb span{font-size:37px;color:white;text-shadow:0 0 16px white}
-.listening .orb{animation:pulse 1.1s infinite}
-@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{50%{transform:scale(1.06);box-shadow:0 0 38px #42dcff,0 0 90px #167aff}}
-.status{color:var(--cyan);font-size:13px;letter-spacing:2px;min-height:22px;text-align:center}
-.hint{font-size:12px;color:var(--muted);text-align:center;margin:8px 0 20px;line-height:1.5}
-button,select,input{font:inherit}
-.mic{border:1px solid #73edff;background:linear-gradient(135deg,#0f82bb,#1250a6);color:white;border-radius:18px;padding:14px 24px;min-width:170px;font-weight:700;box-shadow:0 0 25px #1188c955;cursor:pointer}
-.mic:active{transform:scale(.98)}
-.controls{display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap;justify-content:center}
-select{background:#07192b;color:#eaf8ff;border:1px solid #28536d;border-radius:10px;padding:9px}
-.panel{width:100%;border:1px solid #1e4965;background:#061322c9;border-radius:16px;padding:14px;margin-top:20px}
-.label{font-size:10px;letter-spacing:2px;color:var(--cyan);margin-bottom:8px}
-.msg{font-size:14px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
-.row{display:flex;gap:8px;margin-top:12px}
-input{flex:1;min-width:0;background:#020b15;color:white;border:1px solid #28536d;border-radius:11px;padding:12px}
-.send{border:1px solid #367fa3;background:#0b3854;color:white;border-radius:11px;padding:0 15px;cursor:pointer}
-.note{font-size:11px;line-height:1.5;color:#8fa9bd;margin-top:18px;text-align:center}
-footer{margin-top:24px;font-size:10px;letter-spacing:2px;color:#52748d}
+:root {
+  color-scheme: dark;
+  --cyan: #52e6ff;
+  --muted: #9bb7cd;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at top,#103b62,#071322 55%,#02060d);
+  color: #eaf8ff;
+  font-family: system-ui, sans-serif;
+}
+.app {
+  width: min(100%,520px);
+  margin: auto;
+  padding: 22px 18px 32px;
+  text-align: center;
+}
+.top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+.pill {
+  border: 1px solid #23506c;
+  border-radius: 20px;
+  padding: 6px 9px;
+}
+h1 {
+  margin: 28px 0 4px;
+  letter-spacing: 5px;
+  text-shadow: 0 0 20px var(--cyan);
+}
+.sub {
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 3px;
+}
+.orb-wrap {
+  width: 210px;
+  height: 210px;
+  margin: 30px auto 20px;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+.ring {
+  position: absolute;
+  inset: 0;
+  border: 1px solid #39dfff88;
+  border-radius: 50%;
+  animation: spin 16s linear infinite;
+}
+.ring:after {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px dashed #318bff;
+  border-radius: 50%;
+}
+.orb {
+  width: 125px;
+  height: 125px;
+  border: 1px solid #8cf4ff;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 35% 25%,#e8ffff,#52dfff 12%,#167bb4 35%,#07182c 72%);
+  box-shadow: 0 0 30px #42dcff,0 0 65px #167aff88;
+  font-size: 40px;
+}
+.listening .orb {
+  animation: pulse 1s infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse {
+  50% { transform: scale(1.07); }
+}
+.status {
+  min-height: 24px;
+  color: var(--cyan);
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+.hint {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 8px 0 18px;
+}
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+.mic {
+  padding: 14px 22px;
+  min-width: 180px;
+  border: 1px solid #73edff;
+  border-radius: 15px;
+  background: linear-gradient(135deg,#0f82bb,#1250a6);
+  color: white;
+  font-weight: bold;
+}
+.controls {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 14px;
+}
+select, input {
+  background: #020b15;
+  color: white;
+  border: 1px solid #28536d;
+  border-radius: 10px;
+  padding: 11px;
+  max-width: 100%;
+}
+.panel {
+  margin-top: 18px;
+  padding: 14px;
+  text-align: left;
+  border: 1px solid #1e4965;
+  background: #061322dd;
+  border-radius: 15px;
+}
+.label {
+  color: var(--cyan);
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-bottom: 9px;
+}
+.msg {
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  min-height: 24px;
+}
+.row { display: flex; gap: 8px; margin-top: 12px; }
+.row input { flex: 1; min-width: 0; }
+.send {
+  background: #0b3854;
+  color: white;
+  border: 1px solid #367fa3;
+  border-radius: 10px;
+  padding: 10px 13px;
+}
+button:disabled { opacity: .55; }
+.note {
+  color: #8fa9bd;
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 18px;
+}
+footer {
+  margin-top: 24px;
+  color: #52748d;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
 </style>
 </head>
+
 <body>
 <main class="app" id="app">
-  <div class="top"><span>BUJJI SYSTEMS</span><span class="pill" id="mode">PROTOTYPE • LOCAL</span></div>
-  <h1>BUJJI AI</h1><div class="sub">PERSONAL ASSISTANT</div>
-  <div class="orb-wrap"><div class="ring"></div><div class="orb"><span>✦</span></div></div>
+
+  <div class="top">
+    <span>BUJJI SYSTEMS</span>
+    <span class="pill" id="mode">AI ASSISTANT</span>
+  </div>
+
+  <h1>BUJJI AI</h1>
+  <div class="sub">YOUR PERSONAL ASSISTANT</div>
+
+  <div class="orb-wrap">
+    <div class="ring"></div>
+    <div class="orb">✦</div>
+  </div>
+
   <div class="status" id="status">SYSTEM READY</div>
-  <div class="hint">Tap the microphone and speak.<br>మైక్ నొక్కి తెలుగులో లేదా Englishలో మాట్లాడు.</div>
-  <button class="mic" id="mic">🎙 START SPEAKING</button>
+
+  <div class="hint">
+    మైక్ నొక్కి తెలుగులో లేదా Englishలో మాట్లాడు.<br>
+    Tap the microphone and speak.
+  </div>
+
+  <button class="mic" id="mic">🎙️ START SPEAKING</button>
+
   <div class="controls">
     <select id="lang" aria-label="Speech language">
-      <option value="te-IN">తెలుగు (Telugu)</option>
+      <option value="te-IN">తెలుగు</option>
       <option value="en-IN">English (India)</option>
     </select>
-    <button class="send" id="speakAgain">🔊 Repeat</button>
+    <button class="send" id="repeat">🔊 Repeat</button>
+    <button class="send" id="stop">⏹ Stop</button>
   </div>
-  <section class="panel"><div class="label">YOU SAID / నువ్వు చెప్పింది</div><div class="msg" id="heard">ఇక్కడ నీ మాట కనిపిస్తుంది.</div></section>
-  <section class="panel"><div class="label">BUJJI RESPONSE</div><div class="msg" id="reply">నమస్కారం! నేను బుజ్జి. మైక్ నొక్కి మాట్లాడు. ప్రస్తుతం ఇది voice/UI prototype; ఇంకా online AIకి connect కాలేదు.</div>
-    <div class="row"><input id="typed" placeholder="Type a message… / ఇక్కడ టైప్ చేయి" autocomplete="off"><button class="send" id="send">SEND</button></div>
+
+  <section class="panel">
+    <div class="label">YOU SAID / నువ్వు చెప్పింది</div>
+    <div class="msg" id="heard">ఇక్కడ నీ మాట కనిపిస్తుంది.</div>
   </section>
-  <div class="note">Privacy note: speech recognition may use your browser/device speech service and internet. This prototype does not send messages to an AI provider.</div>
-  <footer>BUJJI AI • BUILD 0.1</footer>
+
+  <section class="panel">
+    <div class="label">BUJJI RESPONSE</div>
+    <div class="msg" id="reply">
+      నమస్కారం బుజ్జీ! నేను బుజ్జి. నాతో మాట్లాడు.
+    </div>
+    <div class="row">
+      <input id="typed" placeholder="ఇక్కడ ప్రశ్న టైప్ చేయి..." autocomplete="off">
+      <button class="send" id="send">SEND</button>
+    </div>
+  </section>
+
+  <div class="note">
+    వాయిస్ గుర్తింపు కోసం బ్రౌజర్ అనుమతి, ఇంటర్నెట్ అవసరం కావచ్చు.
+    AI సమాధానాలకు సురక్షితంగా కాన్ఫిగర్ చేసిన Worker అవసరం.
+  </div>
+
+  <footer>BUJJI AI • BUILD 0.2</footer>
 </main>
+
 <script>
 const $ = id => document.getElementById(id);
-let lastReply = "నమస్కారం! నేను బుజ్జి. మైక్ నొక్కి మాట్లాడు.";
-function setStatus(s){$("status").textContent=s;}
-function speak(text){
-  if(!("speechSynthesis" in window)){setStatus("TEXT ONLY");return;}
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = /[\u0C00-\u0C7F]/.test(text) ? "te-IN" : "en-IN";
-  u.rate = 0.96; u.pitch = 1.0;
-  u.onstart=()=>setStatus("BUJJI SPEAKING");
-  u.onend=()=>setStatus("SYSTEM READY");
-  speechSynthesis.speak(u);
+
+const WORKER_URL =
+  "https://bujji-ai-assistant.gunabharadwaj2.workers.dev";
+
+let recognition = null;
+let lastReply = "నమస్కారం బుజ్జీ! నేను బుజ్జి. నాతో మాట్లాడు.";
+let busy = false;
+
+function setStatus(text) {
+  $("status").textContent = text;
 }
+
+function speak(text) {
+  if (!("speechSynthesis" in window)) {
+    setStatus("VOICE OUTPUT NOT SUPPORTED");
+    return;
+  }
+
+  speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = /[\u0C00-\u0C7F]/.test(text)
+    ? "te-IN"
+    : "en-IN";
+  utterance.rate = 0.95;
+  utterance.pitch = 1.05;
+
+  utterance.onstart = () => setStatus("BUJJI SPEAKING");
+  utterance.onend = () => setStatus("SYSTEM READY");
+  utterance.onerror = () => setStatus("VOICE PLAYBACK ISSUE");
+
+  speechSynthesis.speak(utterance);
+}
+
 async function respond(raw) {
   const q = raw.trim();
-  if (!q) return;
+  if (!q || busy) return;
 
   $("heard").textContent = q;
-  $("reply").textContent = "బుజ్జి, ఆలోచిస్తున్నాను...";
+  $("reply").textContent = "బుజ్జి ఆలోచిస్తోంది...";
+  busy = true;
+  $("send").disabled = true;
+  $("mic").disabled = true;
+  setStatus("CONNECTING TO AI...");
 
   try {
-    const res = await fetch(
-      "https://bujji-ai-assistant.gunabharadwaj2.workers.dev",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: q })
-      }
-    );
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: q })
+    });
 
     const data = await res.json();
 
     if (!res.ok || !data.reply) {
-      throw new Error(data.error || "AI response failed");
+      throw new Error(data.error || "AI request failed");
     }
 
-    lastReply = data.reply;
-    $("reply").textContent = data.reply;
-    speak(data.reply);
+    lastReply = String(data.reply);
+    $("reply").textContent = lastReply;
+    speak(lastReply);
+
   } catch (error) {
-    const msg =
-      "క్షమించు బుజ్జి, AI కనెక్షన్‌లో సమస్య వచ్చింది. మళ్లీ ప్రయత్నించు.";
-    lastReply = msg;
-    $("reply").textContent = msg;
-    speak(msg);
+    console.error("BUJJI AI error:", error);
+
+    lastReply =
+      "క్షమించు బుజ్జీ, AI కనెక్షన్‌లో సమస్య వచ్చింది. " +
+      "ఇంటర్నెట్ మరియు Worker సెట్టింగ్స్ చెక్ చేసి మళ్లీ ప్రయత్నించు.";
+
+    $("reply").textContent = lastReply;
+    setStatus("AI CONNECTION ISSUE");
+  } finally {
+    busy = false;
+    $("send").disabled = false;
+    $("mic").disabled = false;
   }
 }
- 
+
+function startListening() {
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    setStatus("SPEECH NOT SUPPORTED");
+    $("reply").textContent =
+      "ఈ బ్రౌజర్‌లో వాయిస్ గుర్తింపు అందుబాటులో లేదు. " +
+      "Chromeలో ప్రయత్నించు లేదా క్రింద టైప్ చేసి పంపు.";
+    return;
+  }
+
+  if (recognition) {
+    try { recognition.abort(); } catch (e) {}
+  }
+
+  recognition = new SpeechRecognition();
+  recognition.lang = $("lang").value;
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  recognition.onstart = () => {
+    $("app").classList.add("listening");
+    setStatus("LISTENING...");
+    $("mic").textContent = "🎙️ LISTENING...";
+  };
+
+  recognition.onresult = event => {
+    const text = event.results[0][0].transcript;
+    $("heard").textContent = text;
+    respond(text);
+  };
+
+  recognition.onerror = event => {
+    setStatus("MIC: " + event.error.toUpperCase());
+    $("reply").textContent =
+      "మైక్ పని చేయకపోతే Chromeలో Microphone permission " +
+      "అనుమతించు. అవసరమైతే మళ్లీ ప్రయత్నించు.";
+  };
+
+  recognition.onend = () => {
+    $("app").classList.remove("listening");
+    $("mic").textContent = "🎙️ START SPEAKING";
+    if (!busy) setStatus("SYSTEM READY");
+  };
+
+  try {
+    recognition.start();
+  } catch (error) {
+    setStatus("PLEASE TRY AGAIN");
+  }
+}
+
+$("mic").addEventListener("click", startListening);
+
+$("send").addEventListener("click", () => {
+  const text = $("typed").value;
+  if (text.trim() && !busy) {
+    $("typed").value = "";
+    respond(text);
+  }
+});
+
+$("typed").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    $("send").click();
+  }
+});
+
+$("repeat").addEventListener("click", () => {
+  if (lastReply) speak(lastReply);
+});
+
+$("stop").addEventListener("click", () => {
+  if (recognition) {
+    try { recognition.abort(); } catch (e) {}
+  }
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  $("app").classList.remove("listening");
+  $("mic").textContent = "🎙️ START SPEAKING";
+  setStatus("SYSTEM READY");
+});
+</script>
+</body>
+</html>
