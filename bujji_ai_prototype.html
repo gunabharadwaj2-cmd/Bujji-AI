@@ -1,400 +1,404 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="te">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#06111f">
-<title>BUJJI AI</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080f20">
+  <title>BUJJI AI Assistant</title>
 
-<style>
-:root {
-  color-scheme: dark;
-  --cyan: #52e6ff;
-  --muted: #9bb7cd;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: radial-gradient(ellipse at top,#103b62,#071322 55%,#02060d);
-  color: #eaf8ff;
-  font-family: system-ui, sans-serif;
-}
-.app {
-  width: min(100%,520px);
-  margin: auto;
-  padding: 22px 18px 32px;
-  text-align: center;
-}
-.top {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  color: var(--muted);
-  font-size: 11px;
-  letter-spacing: 1px;
-}
-.pill {
-  border: 1px solid #23506c;
-  border-radius: 20px;
-  padding: 6px 9px;
-}
-h1 {
-  margin: 28px 0 4px;
-  letter-spacing: 5px;
-  text-shadow: 0 0 20px var(--cyan);
-}
-.sub {
-  color: var(--muted);
-  font-size: 12px;
-  letter-spacing: 3px;
-}
-.orb-wrap {
-  width: 210px;
-  height: 210px;
-  margin: 30px auto 20px;
-  display: grid;
-  place-items: center;
-  position: relative;
-}
-.ring {
-  position: absolute;
-  inset: 0;
-  border: 1px solid #39dfff88;
-  border-radius: 50%;
-  animation: spin 16s linear infinite;
-}
-.ring:after {
-  content: "";
-  position: absolute;
-  inset: 18px;
-  border: 1px dashed #318bff;
-  border-radius: 50%;
-}
-.orb {
-  width: 125px;
-  height: 125px;
-  border: 1px solid #8cf4ff;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: radial-gradient(circle at 35% 25%,#e8ffff,#52dfff 12%,#167bb4 35%,#07182c 72%);
-  box-shadow: 0 0 30px #42dcff,0 0 65px #167aff88;
-  font-size: 40px;
-}
-.listening .orb {
-  animation: pulse 1s infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes pulse {
-  50% { transform: scale(1.07); }
-}
-.status {
-  min-height: 24px;
-  color: var(--cyan);
-  font-size: 13px;
-  letter-spacing: 1px;
-}
-.hint {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.7;
-  margin: 8px 0 18px;
-}
-button, input, select { font: inherit; }
-button { cursor: pointer; }
-.mic {
-  padding: 14px 22px;
-  min-width: 180px;
-  border: 1px solid #73edff;
-  border-radius: 15px;
-  background: linear-gradient(135deg,#0f82bb,#1250a6);
-  color: white;
-  font-weight: bold;
-}
-.controls {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 9px;
-  margin-top: 14px;
-}
-select, input {
-  background: #020b15;
-  color: white;
-  border: 1px solid #28536d;
-  border-radius: 10px;
-  padding: 11px;
-  max-width: 100%;
-}
-.panel {
-  margin-top: 18px;
-  padding: 14px;
-  text-align: left;
-  border: 1px solid #1e4965;
-  background: #061322dd;
-  border-radius: 15px;
-}
-.label {
-  color: var(--cyan);
-  font-size: 10px;
-  letter-spacing: 2px;
-  margin-bottom: 9px;
-}
-.msg {
-  font-size: 14px;
-  line-height: 1.7;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  min-height: 24px;
-}
-.row { display: flex; gap: 8px; margin-top: 12px; }
-.row input { flex: 1; min-width: 0; }
-.send {
-  background: #0b3854;
-  color: white;
-  border: 1px solid #367fa3;
-  border-radius: 10px;
-  padding: 10px 13px;
-}
-button:disabled { opacity: .55; }
-.note {
-  color: #8fa9bd;
-  font-size: 11px;
-  line-height: 1.6;
-  margin-top: 18px;
-}
-footer {
-  margin-top: 24px;
-  color: #52748d;
-  font-size: 10px;
-  letter-spacing: 2px;
-}
-</style>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 16px;
+      background: radial-gradient(circle at top, #18365c, #080f20 65%);
+      color: #f4f8ff;
+      font-family: Arial, sans-serif;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      padding: 18px 8px;
+    }
+
+    h1 {
+      margin: 0;
+      color: #56dcff;
+      letter-spacing: 2px;
+    }
+
+    .subtitle {
+      color: #b9cce5;
+      margin-top: 8px;
+    }
+
+    .orb {
+      width: 105px;
+      height: 105px;
+      margin: 20px auto;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #d7ffff, #56dcff 25%, #1766ad 60%, #101b43);
+      box-shadow: 0 0 28px #35bfff80;
+    }
+
+    .panel {
+      padding: 16px;
+      margin: 14px 0;
+      border-radius: 16px;
+      background: #111d32eF;
+      border: 1px solid #344966;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #8ee8ff;
+      font-weight: bold;
+    }
+
+    select,
+    textarea {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      color: #fff;
+      background: #091326;
+      border: 1px solid #405575;
+      border-radius: 10px;
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 12px;
+    }
+
+    button {
+      flex: 1;
+      min-width: 105px;
+      padding: 12px 10px;
+      border: 0;
+      border-radius: 10px;
+      background: #56dcff;
+      color: #071323;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      background: #293c58;
+      color: white;
+      border: 1px solid #506580;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .content {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      line-height: 1.7;
+      min-height: 45px;
+    }
+
+    #status {
+      text-align: center;
+      color: #9fe9c2;
+    }
+
+    #error {
+      color: #ffb8b8;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 18px 4px;
+      color: #94a9c5;
+      font-size: 12px;
+    }
+  </style>
 </head>
 
 <body>
-<main class="app" id="app">
+  <main class="app">
+    <header>
+      <h1>BUJJI AI</h1>
+      <div class="subtitle">Your Personal AI Assistant</div>
+      <div class="orb" aria-hidden="true"></div>
+      <div id="status" role="status">Ready to assist you</div>
+    </header>
 
-  <div class="top">
-    <span>BUJJI SYSTEMS</span>
-    <span class="pill" id="mode">AI ASSISTANT</span>
-  </div>
+    <section class="panel">
+      <label for="language">Language / భాష</label>
+      <select id="language">
+        <option value="te-IN">తెలుగు</option>
+        <option value="en-IN">English</option>
+        <option value="hi-IN">हिन्दी</option>
+      </select>
+    </section>
 
-  <h1>BUJJI AI</h1>
-  <div class="sub">YOUR PERSONAL ASSISTANT</div>
+    <section class="panel">
+      <label for="message">Talk to Bujji AI</label>
+      <textarea
+        id="message"
+        placeholder="బుజ్జి AI, నీ ప్రశ్న టైప్ చేయి..."
+      ></textarea>
 
-  <div class="orb-wrap">
-    <div class="ring"></div>
-    <div class="orb">✦</div>
-  </div>
+      <div class="buttons">
+        <button id="sendBtn" type="button">Send Message</button>
+        <button id="micBtn" class="secondary" type="button">
+          🎤 Speak
+        </button>
+      </div>
+    </section>
 
-  <div class="status" id="status">SYSTEM READY</div>
+    <section class="panel">
+      <label>మీరు చెప్పిన మాటలు / Heard Text</label>
+      <div id="heard" class="content">ఇక్కడ voice input కనిపిస్తుంది.</div>
+    </section>
 
-  <div class="hint">
-    మైక్ నొక్కి తెలుగులో లేదా Englishలో మాట్లాడు.<br>
-    Tap the microphone and speak.
-  </div>
+    <section class="panel">
+      <label>Bujji AI Reply</label>
+      <div id="reply" class="content" aria-live="polite">
+        హాయ్! నేను బుజ్జి AI. నీకు ఎలా సహాయం చేయాలి?
+      </div>
 
-  <button class="mic" id="mic">🎙️ START SPEAKING</button>
+      <div class="buttons">
+        <button id="repeatBtn" type="button">🔊 Repeat Reply</button>
+        <button id="stopBtn" class="secondary" type="button">
+          Stop Voice
+        </button>
+      </div>
+    </section>
 
-  <div class="controls">
-    <select id="lang" aria-label="Speech language">
-      <option value="te-IN">తెలుగు</option>
-      <option value="en-IN">English (India)</option>
-    </select>
-    <button class="send" id="repeat">🔊 Repeat</button>
-    <button class="send" id="stop">⏹ Stop</button>
-  </div>
+    <section class="panel">
+      <label>Connection Details</label>
+      <div id="error" role="status">No errors reported.</div>
+    </section>
 
-  <section class="panel">
-    <div class="label">YOU SAID / నువ్వు చెప్పింది</div>
-    <div class="msg" id="heard">ఇక్కడ నీ మాట కనిపిస్తుంది.</div>
-  </section>
+    <footer>BUJJI AI Assistant</footer>
+  </main>
 
-  <section class="panel">
-    <div class="label">BUJJI RESPONSE</div>
-    <div class="msg" id="reply">
-      నమస్కారం బుజ్జీ! నేను బుజ్జి. నాతో మాట్లాడు.
-    </div>
-    <div class="row">
-      <input id="typed" placeholder="ఇక్కడ ప్రశ్న టైప్ చేయి..." autocomplete="off">
-      <button class="send" id="send">SEND</button>
-    </div>
-  </section>
+  <script>
+    "use strict";
 
-  <div class="note">
-    వాయిస్ గుర్తింపు కోసం బ్రౌజర్ అనుమతి, ఇంటర్నెట్ అవసరం కావచ్చు.
-    AI సమాధానాలకు సురక్షితంగా కాన్ఫిగర్ చేసిన Worker అవసరం.
-  </div>
+    const WORKER_URL =
+      "https://bujji-ai-assistant.gunabharadwaj2.workers.dev";
 
-  <footer>BUJJI AI • BUILD 0.2</footer>
-</main>
+    const languageEl = document.getElementById("language");
+    const messageEl = document.getElementById("message");
+    const heardEl = document.getElementById("heard");
+    const replyEl = document.getElementById("reply");
+    const statusEl = document.getElementById("status");
+    const errorEl = document.getElementById("error");
+    const sendBtn = document.getElementById("sendBtn");
+    const micBtn = document.getElementById("micBtn");
+    const repeatBtn = document.getElementById("repeatBtn");
+    const stopBtn = document.getElementById("stopBtn");
 
-<script>
-const $ = id => document.getElementById(id);
+    let isBusy = false;
+    let recognition = null;
 
-const WORKER_URL =
-  "https://bujji-ai-assistant.gunabharadwaj2.workers.dev";
-
-let recognition = null;
-let lastReply = "నమస్కారం బుజ్జీ! నేను బుజ్జి. నాతో మాట్లాడు.";
-let busy = false;
-
-function setStatus(text) {
-  $("status").textContent = text;
-}
-
-function speak(text) {
-  if (!("speechSynthesis" in window)) {
-    setStatus("VOICE OUTPUT NOT SUPPORTED");
-    return;
-  }
-
-  speechSynthesis.cancel();
-
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = /[\u0C00-\u0C7F]/.test(text)
-    ? "te-IN"
-    : "en-IN";
-  utterance.rate = 0.95;
-  utterance.pitch = 1.05;
-
-  utterance.onstart = () => setStatus("BUJJI SPEAKING");
-  utterance.onend = () => setStatus("SYSTEM READY");
-  utterance.onerror = () => setStatus("VOICE PLAYBACK ISSUE");
-
-  speechSynthesis.speak(utterance);
-}
-
-async function respond(raw) {
-  const q = raw.trim();
-  if (!q || busy) return;
-
-  $("heard").textContent = q;
-  $("reply").textContent = "బుజ్జి ఆలోచిస్తోంది...";
-  busy = true;
-  $("send").disabled = true;
-  $("mic").disabled = true;
-  setStatus("CONNECTING TO AI...");
-
-  try {
-    const res = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: q })
-    });
-
-    const data = await res.json();
-
-    if (!res.ok || !data.reply) {
-      throw new Error(data.error || "AI request failed");
+    function setStatus(text) {
+      statusEl.textContent = text;
     }
 
-    lastReply = String(data.reply);
-    $("reply").textContent = lastReply;
-    speak(lastReply);
+    function setError(text) {
+      errorEl.textContent = text;
+    }
 
-  } catch (error) {
-    console.error("BUJJI AI error:", error);
+    async function sendMessage() {
+      const message = messageEl.value.trim();
 
-    lastReply =
-      "క్షమించు బుజ్జీ, AI కనెక్షన్‌లో సమస్య వచ్చింది. " +
-      "ఇంటర్నెట్ మరియు Worker సెట్టింగ్స్ చెక్ చేసి మళ్లీ ప్రయత్నించు.";
+      if (!message) {
+        setError("ముందుగా నీ మెసేజ్ టైప్ చేయి లేదా మైక్ ఉపయోగించు.");
+        return;
+      }
 
-    $("reply").textContent = lastReply;
-    setStatus("AI CONNECTION ISSUE");
-  } finally {
-    busy = false;
-    $("send").disabled = false;
-    $("mic").disabled = false;
-  }
-}
+      if (isBusy) {
+        setError("దయచేసి ప్రస్తుత సమాధానం వచ్చే వరకు వేచి ఉండు.");
+        return;
+      }
 
-function startListening() {
-  const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
+      isBusy = true;
+      sendBtn.disabled = true;
+      setStatus("Bujji AI is thinking...");
+      setError("");
+      replyEl.textContent = "";
 
-  if (!SpeechRecognition) {
-    setStatus("SPEECH NOT SUPPORTED");
-    $("reply").textContent =
-      "ఈ బ్రౌజర్‌లో వాయిస్ గుర్తింపు అందుబాటులో లేదు. " +
-      "Chromeలో ప్రయత్నించు లేదా క్రింద టైప్ చేసి పంపు.";
-    return;
-  }
+      try {
+        const response = await fetch(WORKER_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: message
+          })
+        });
 
-  if (recognition) {
-    try { recognition.abort(); } catch (e) {}
-  }
+        const data = await response.json();
 
-  recognition = new SpeechRecognition();
-  recognition.lang = $("lang").value;
-  recognition.continuous = false;
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
+        if (!response.ok) {
+          throw new Error(
+            data.error || "Server error: " + response.status
+          );
+        }
 
-  recognition.onstart = () => {
-    $("app").classList.add("listening");
-    setStatus("LISTENING...");
-    $("mic").textContent = "🎙️ LISTENING...";
-  };
+        if (
+          !data ||
+          typeof data.reply !== "string" ||
+          !data.reply.trim()
+        ) {
+          throw new Error("AI నుంచి సరైన సమాధానం రాలేదు.");
+        }
 
-  recognition.onresult = event => {
-    const text = event.results[0][0].transcript;
-    $("heard").textContent = text;
-    respond(text);
-  };
+        replyEl.textContent = data.reply.trim();
+        setStatus("Bujji AI is ready");
+      } catch (error) {
+        console.error("Bujji AI request failed:", error);
+        setStatus("Connection problem");
 
-  recognition.onerror = event => {
-    setStatus("MIC: " + event.error.toUpperCase());
-    $("reply").textContent =
-      "మైక్ పని చేయకపోతే Chromeలో Microphone permission " +
-      "అనుమతించు. అవసరమైతే మళ్లీ ప్రయత్నించు.";
-  };
+        if (error instanceof TypeError) {
+          setError(
+            "Worker కనెక్షన్ విఫలమైంది. Internet, Worker URL, " +
+            "CORS సెట్టింగ్స్ చెక్ చేయి."
+          );
+        } else {
+          setError(error.message || "దయచేసి మళ్లీ ప్రయత్నించు.");
+        }
+      } finally {
+        isBusy = false;
+        sendBtn.disabled = false;
+      }
+    }
 
-  recognition.onend = () => {
-    $("app").classList.remove("listening");
-    $("mic").textContent = "🎙️ START SPEAKING";
-    if (!busy) setStatus("SYSTEM READY");
-  };
+    function startVoiceInput() {
+      const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
 
-  try {
-    recognition.start();
-  } catch (error) {
-    setStatus("PLEASE TRY AGAIN");
-  }
-}
+      if (!SpeechRecognition) {
+        setError(
+          "ఈ browserలో speech recognition అందుబాటులో లేదు. " +
+          "మరో supported browserలో ప్రయత్నించు."
+        );
+        return;
+      }
 
-$("mic").addEventListener("click", startListening);
+      if (recognition) {
+        recognition.abort();
+      }
 
-$("send").addEventListener("click", () => {
-  const text = $("typed").value;
-  if (text.trim() && !busy) {
-    $("typed").value = "";
-    respond(text);
-  }
-});
+      recognition = new SpeechRecognition();
+      recognition.lang = languageEl.value;
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
 
-$("typed").addEventListener("keydown", event => {
-  if (event.key === "Enter") {
-    $("send").click();
-  }
-});
+      recognition.onstart = function () {
+        micBtn.disabled = true;
+        setStatus("Listening... మాట్లాడు");
+        setError("");
+      };
 
-$("repeat").addEventListener("click", () => {
-  if (lastReply) speak(lastReply);
-});
+      recognition.onresult = function (event) {
+        const transcript = event.results[0][0].transcript;
+        messageEl.value = transcript;
+        heardEl.textContent = transcript;
+      };
 
-$("stop").addEventListener("click", () => {
-  if (recognition) {
-    try { recognition.abort(); } catch (e) {}
-  }
-  if ("speechSynthesis" in window) speechSynthesis.cancel();
-  $("app").classList.remove("listening");
-  $("mic").textContent = "🎙️ START SPEAKING";
-  setStatus("SYSTEM READY");
-});
-</script>
+      recognition.onerror = function (event) {
+        setError("Voice input error: " + event.error);
+      };
+
+      recognition.onend = function () {
+        micBtn.disabled = false;
+        setStatus("Bujji AI is ready");
+      };
+
+      try {
+        recognition.start();
+      } catch (error) {
+        micBtn.disabled = false;
+        setError("మైక్ ప్రారంభం కాలేదు. మళ్లీ ప్రయత్నించు.");
+      }
+    }
+
+    function speakReply() {
+      const text = replyEl.textContent.trim();
+
+      if (!text) {
+        setError("చదవడానికి సమాధానం లేదు.");
+        return;
+      }
+
+      if (!("speechSynthesis" in window)) {
+        setError("ఈ browserలో voice output support లేదు.");
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = languageEl.value;
+      utterance.rate = 0.95;
+
+      utterance.onerror = function () {
+        setError("Voice outputలో సమస్య వచ్చింది.");
+      };
+
+      window.speechSynthesis.speak(utterance);
+      setError("");
+    }
+
+    function stopVoice() {
+      if (recognition) {
+        recognition.abort();
+      }
+
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+
+      micBtn.disabled = false;
+      setStatus("Voice stopped");
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+    micBtn.addEventListener("click", startVoiceInput);
+    repeatBtn.addEventListener("click", speakReply);
+    stopBtn.addEventListener("click", stopVoice);
+
+    messageEl.addEventListener("keydown", function (event) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+  </script>
 </body>
 </html>
